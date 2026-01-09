@@ -6,12 +6,17 @@ let highscore = 0;
 
 document.querySelector('.number').textContent = secretNumber;
 
+const displayMessage = function (message) {
+  document.querySelector('.message').textContent = message;
+};
+
 document.querySelector('.check').addEventListener('click', () => {
   const guessNumber = Number(document.querySelector('.guess').value);
   if (!guessNumber) {
+    displayMessage('¡No hay número!');
     document.querySelector('.check').textContent = 'Pon un número!';
   } else if (guessNumber === secretNumber) {
-    document.querySelector('.message').textContent = 'Has ganado!';
+    displayMessage('¡Correcto!');
     document.querySelector('.check').textContent = 'Adivinaste!';
 
     document.querySelector('body').style.backgroundColor = '#60b347';
@@ -21,35 +26,17 @@ document.querySelector('.check').addEventListener('click', () => {
       highscore = score;
       document.querySelector('.highscore').textContent = highscore;
     }
-  } else if (guessNumber > secretNumber) {
-    if (score > 1) {
-      document.querySelector('.check').textContent = 'Check!';
-      document.querySelector('.message').textContent = 'Muy alto!';
-
-      score--;
-      document.querySelector('.score').textContent = score;
-    } else {
-      document.querySelector('.message').textContent = 'Has perdido el juego!';
-      document.querySelector('.score').textContent = 0;
-    }
-  } else if (guessNumber < secretNumber) {
-    if (score > 1) {
-      document.querySelector('.check').textContent = 'Check!';
-      document.querySelector('.message').textContent = 'Muy bajo!';
-
-      score--;
-      document.querySelector('.score').textContent = score;
-    } else {
-      document.querySelector('.message').textContent = 'Has perdido el juego!';
-      document.querySelector('.score').textContent = 0;
-    }
+  } else if (guessNumber != secretNumber) {
+    displayMessage(guessNumber > secretNumber ? 'Muy alto!' : 'Muy bajo!');
+    score--;
+    document.querySelector('.score').textContent = score;
   }
 });
 
 document.querySelector('.again').addEventListener('click', () => {
   score = 20;
   document.querySelector('.score').textContent = score;
-  document.querySelector('.message').textContent = 'Start guessing...';
+  displayMessage('Start guessing...');
   document.querySelector('.check').textContent = 'Check!';
   document.querySelector('.guess').value = '';
 
